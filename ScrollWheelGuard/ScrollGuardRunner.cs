@@ -42,7 +42,7 @@ namespace ScrollWheelGuard
 
             if (ScrollGuard.DebugLogging)
             {
-                Debug.Log("[ScrollWheelGuard] runner alive in " + HighLogic.LoadedScene +
+                ScrollGuardLog.Info("[ScrollWheelGuard] runner alive in " + HighLogic.LoadedScene +
                           " (autodetect=" + ScrollGuard.AutoDetectWindows +
                           ", freeze=" + ScrollGuard.FreezeCameraZoom + ")");
             }
@@ -61,7 +61,7 @@ namespace ScrollWheelGuard
             if (ScrollGuard.DebugLogging && heartbeatAt > 0f && Time.realtimeSinceStartup >= heartbeatAt)
             {
                 heartbeatAt = 0f;
-                Debug.Log("[ScrollWheelGuard] " + HighLogic.LoadedScene + " heartbeat: " +
+                ScrollGuardLog.Info("[ScrollWheelGuard] " + HighLogic.LoadedScene + " heartbeat: " +
                           ScrollGuard.RegisteredWindows + " registered window(s), " +
                           peakRects + " rect(s) seen so far, mouse at " + Input.mousePosition +
                           ", screen " + Screen.width + "x" + Screen.height +
@@ -79,13 +79,13 @@ namespace ScrollWheelGuard
                     blockedCallsAtEntry = ScrollGuardPatches.BlockedCalls;
                     if (ScrollGuard.DebugLogging)
                     {
-                        Debug.Log("[ScrollWheelGuard] blocking = true in " + HighLogic.LoadedScene);
+                        ScrollGuardLog.Info("[ScrollWheelGuard] blocking = true in " + HighLogic.LoadedScene);
                     }
                 }
                 else if (ScrollGuard.DebugLogging)
                 {
                     int fired = ScrollGuardPatches.BlockedCalls - blockedCallsAtEntry;
-                    Debug.Log("[ScrollWheelGuard] blocking = false in " + HighLogic.LoadedScene +
+                    ScrollGuardLog.Info("[ScrollWheelGuard] blocking = false in " + HighLogic.LoadedScene +
                               "; fired " + fired + " filter(s) while blocked" +
                               (fired == 0 ? " -- THIS SCENE'S WHEEL READ IS NOT PATCHED" : string.Empty));
                 }

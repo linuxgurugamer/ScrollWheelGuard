@@ -6,6 +6,11 @@ No integration required. Every `GUI.Window` and `GUILayout.Window` in the game i
 automatically, so this works for your windows, stock ones, and other mods' — installing the DLL is
 the whole setup. An explicit API is available for UI that is not a `GUI.Window`.
 
+
+### Logging setting
+
+The stock **Scroll Wheel Guard** settings page includes **Disable all logging except errors**. When enabled, informational and warning messages from the mod are suppressed; error messages are always written to the KSP log.
+
 ## Why this is harder than it looks
 
 KSP reads the wheel through several unrelated paths, and the obvious interception point does not

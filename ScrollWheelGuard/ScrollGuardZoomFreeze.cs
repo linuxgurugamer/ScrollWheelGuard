@@ -133,7 +133,7 @@ namespace ScrollWheelGuard
 
                     if (ScrollGuard.DebugLogging && reported.Add(t.Label))
                     {
-                        Debug.Log("[ScrollWheelGuard] CHANGED WHILE BLOCKED: " + t.Label + "  " +
+                        ScrollGuardLog.Info("[ScrollWheelGuard] CHANGED WHILE BLOCKED: " + t.Label + "  " +
                                   t.Snapshot.ToString("F4") + " -> " + current.ToString("F4") +
                                   (t.Pinnable || ScrollGuard.FreezeAllCameraFloats ? "  (pinning)" : "  (watching only)"));
                     }
@@ -145,7 +145,7 @@ namespace ScrollWheelGuard
                 {
                     if (++t.Failures >= 5)
                     {
-                        Debug.LogWarning("[ScrollWheelGuard] dropping watch target " + t.Label + ": " + e.Message);
+                        ScrollGuardLog.Warning("[ScrollWheelGuard] dropping watch target " + t.Label + ": " + e.Message);
                         targets.RemoveAt(i);
                     }
                 }
@@ -208,7 +208,7 @@ namespace ScrollWheelGuard
                 sb.Append("  -- NO CAMERA CONTROLLERS FOUND, the zoom fallback cannot work here");
             }
 
-            Debug.Log(sb.ToString());
+            ScrollGuardLog.Info(sb.ToString());
         }
 
         private void Collect(object owner, Type type)

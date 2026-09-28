@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("0.1.2.0")]
+[assembly: AssemblyFileVersion("0.1.3.0")]
 
 // Lets other mods declare a dependency with [assembly: KSPAssemblyDependency("ScrollWheelGuard", 1, 0)].
 [assembly: KSPAssembly("ScrollWheelGuard", 1, 0)]

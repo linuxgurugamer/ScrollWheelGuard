@@ -51,6 +51,7 @@
     <Compile Include="ScrollGuard.cs" />
     <Compile Include="GameWindowCursor.cs" />
     <Compile Include="ScrollGuardSettings.cs" />
+    <Compile Include="ScrollGuardLog.cs" />
     <Compile Include="ScrollGuardAutoWindows.cs" />
     <Compile Include="ScrollGuardPatcher.cs" />
     <Compile Include="ScrollGuardRunner.cs" />

@@ -51,7 +51,7 @@ namespace ScrollWheelGuard
 
                 if (applied)
                 {
-                    Debug.LogWarning("[ScrollWheelGuard] patcher ran twice in one assembly; ignoring the second pass.");
+                    ScrollGuardLog.Warning("[ScrollWheelGuard] patcher ran twice in one assembly; ignoring the second pass.");
                     return;
                 }
                 applied = true;
@@ -60,7 +60,7 @@ namespace ScrollWheelGuard
                 {
                     if (Harmony.HasAnyPatches(HarmonyId))
                     {
-                        Debug.LogError("[ScrollWheelGuard] patches for id '" + HarmonyId + "' already exist, so a SECOND COPY of " +
+                        ScrollGuardLog.Error("[ScrollWheelGuard] patches for id '" + HarmonyId + "' already exist, so a SECOND COPY of " +
                                        "ScrollWheelGuard.dll is loaded. Two copies means two separate sets of statics: " +
                                        "whatever you register with one copy is invisible to the other's patches. " +
                                        "Delete the duplicate, then restart. Skipping this pass.");
@@ -79,7 +79,7 @@ namespace ScrollWheelGuard
                 int readers = PatchAxisReaders(harmony);
                 int candidates = PatchCallSites(harmony, ForceDeepScan);
 
-                Debug.Log("[ScrollWheelGuard] ready: " + direct + " Input member(s) prefixed directly, " +
+                ScrollGuardLog.Info("[ScrollWheelGuard] ready: " + direct + " Input member(s) prefixed directly, " +
                           readers + " axis reader(s) prefixed, " +
                           candidates + " candidate method(s) transpiled, " +
                           ScrollGuardPatches.FilteredReads + " wheel read(s) rewritten, " +
@@ -87,14 +87,14 @@ namespace ScrollWheelGuard
 
                 if (ScrollGuardPatches.UnmatchedCandidates > 0)
                 {
-                    Debug.LogWarning("[ScrollWheelGuard] " + ScrollGuardPatches.UnmatchedCandidates +
+                    ScrollGuardLog.Warning("[ScrollWheelGuard] " + ScrollGuardPatches.UnmatchedCandidates +
                                      " method(s) touch the wheel but use a read shape this build does not " +
                                      "recognise; each was logged by name above.");
                 }
             }
             catch (Exception e)
             {
-                Debug.LogError("[ScrollWheelGuard] setup failed: " + e);
+                ScrollGuardLog.Error("[ScrollWheelGuard] setup failed: " + e);
             }
         }
 
@@ -112,7 +112,7 @@ namespace ScrollWheelGuard
             MethodInfo m = ScrollGuardPatches.InputScrollDelta;
             if (m == null)
             {
-                Debug.LogWarning("[ScrollWheelGuard] Input.mouseScrollDelta getter not found.");
+                ScrollGuardLog.Warning("[ScrollWheelGuard] Input.mouseScrollDelta getter not found.");
                 return 0;
             }
 
@@ -122,19 +122,19 @@ namespace ScrollWheelGuard
 
             if (!hasBody)
             {
-                Debug.LogWarning("[ScrollWheelGuard] Input.mouseScrollDelta is extern here; falling back to call-site rewriting.");
+                ScrollGuardLog.Warning("[ScrollWheelGuard] Input.mouseScrollDelta is extern here; falling back to call-site rewriting.");
                 return 0;
             }
 
             try
             {
                 harmony.Patch(m, new HarmonyMethod(AccessTools.Method(typeof(ScrollGuardPatches), "ScrollDeltaPrefix")));
-                Debug.Log("[ScrollWheelGuard] prefixed Input.mouseScrollDelta directly; this covers every reader in every assembly.");
+                ScrollGuardLog.Info("[ScrollWheelGuard] prefixed Input.mouseScrollDelta directly; this covers every reader in every assembly.");
                 return 1;
             }
             catch (Exception e)
             {
-                Debug.LogWarning("[ScrollWheelGuard] could not prefix Input.mouseScrollDelta: " + e.Message);
+                ScrollGuardLog.Warning("[ScrollWheelGuard] could not prefix Input.mouseScrollDelta: " + e.Message);
                 return 0;
             }
         }
@@ -154,16 +154,16 @@ namespace ScrollWheelGuard
                 try
                 {
                     harmony.Patch(m, prefix);
-                    Debug.Log("[ScrollWheelGuard] prefixed " + ScrollGuardPatches.Describe(m));
+                    ScrollGuardLog.Info("[ScrollWheelGuard] prefixed " + ScrollGuardPatches.Describe(m));
                     n++;
                 }
                 catch (Exception e)
                 {
-                    Debug.LogWarning("[ScrollWheelGuard] could not prefix " + ScrollGuardPatches.Describe(m) + ": " + e.Message);
+                    ScrollGuardLog.Warning("[ScrollWheelGuard] could not prefix " + ScrollGuardPatches.Describe(m) + ": " + e.Message);
                 }
             }
 
-            if (n == 0) Debug.LogWarning("[ScrollWheelGuard] no parameterless float readers found on the mouse wheel binding.");
+            if (n == 0) ScrollGuardLog.Warning("[ScrollWheelGuard] no parameterless float readers found on the mouse wheel binding.");
             return n;
         }
 
@@ -218,11 +218,11 @@ namespace ScrollWheelGuard
                 }
                 catch (Exception e)
                 {
-                    Debug.LogWarning("[ScrollWheelGuard] transpile failed on " + ScrollGuardPatches.Describe(targets[i]) + ": " + e.Message);
+                    ScrollGuardLog.Warning("[ScrollWheelGuard] transpile failed on " + ScrollGuardPatches.Describe(targets[i]) + ": " + e.Message);
                 }
             }
 
-            Debug.Log("[ScrollWheelGuard] " + (deep ? "deep" : "targeted") + " scan: " + scanned + " method(s) examined, " +
+            ScrollGuardLog.Info("[ScrollWheelGuard] " + (deep ? "deep" : "targeted") + " scan: " + scanned + " method(s) examined, " +
                       targets.Count + " candidate(s), " + patched + " transpiled, " + sw.ElapsedMilliseconds + " ms.");
             return patched;
         }
@@ -292,7 +292,7 @@ namespace ScrollWheelGuard
             sb.Append("[ScrollWheelGuard] ").Append(self).Append(" is loaded ").Append(copies.Count).Append(" times:");
             for (int i = 0; i < copies.Count; i++) sb.Append(NewLine).Append("    ").Append(copies[i]);
             sb.Append(NewLine).Append("    Remove all but one and restart KSP.");
-            Debug.LogError(sb.ToString());
+            ScrollGuardLog.Error(sb.ToString());
         }
     }
 
@@ -549,13 +549,13 @@ namespace ScrollWheelGuard
             if (hits > 0)
             {
                 FilteredReads += hits;
-                Debug.Log("[ScrollWheelGuard] covered " + hits + " wheel read(s) in " + Describe(original) +
+                ScrollGuardLog.Info("[ScrollWheelGuard] covered " + hits + " wheel read(s) in " + Describe(original) +
                           " (" + swapped + " swapped, " + inserted + " filtered)");
             }
             else
             {
                 UnmatchedCandidates++;
-                Debug.LogWarning("[ScrollWheelGuard] UNMATCHED: " + Describe(original) +
+                ScrollGuardLog.Warning("[ScrollWheelGuard] UNMATCHED: " + Describe(original) +
                                  " touches the wheel but no read shape was recognised.");
             }
 
@@ -703,7 +703,7 @@ namespace ScrollWheelGuard
                 sb.AppendLine("    " + settings[i].FieldType.Name + " " + n + " = " + v);
             }
 
-            Debug.Log(sb.ToString());
+            ScrollGuardLog.Info(sb.ToString());
         }
 
         private static string BodyState(MethodInfo m)

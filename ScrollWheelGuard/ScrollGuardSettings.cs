@@ -45,6 +45,12 @@ namespace ScrollWheelGuard
             autoPersistance = true)]
         public bool blockOutsideGameWindow = true;
 
+        [GameParameters.CustomParameterUI(
+            "Disable all logging except errors",
+            toolTip = "Suppresses Scroll Wheel Guard informational and warning messages. Error messages will still be written to the KSP log.",
+            autoPersistance = true)]
+        public bool errorsOnlyLogging = false;
+
         internal static void ApplyToRuntime()
         {
             // There is no CurrentGame at the main menu and during a few startup/shutdown transitions.
@@ -58,7 +64,10 @@ namespace ScrollWheelGuard
                     HighLogic.CurrentGame.Parameters.CustomParams<ScrollGuardSettings>();
 
                 if (settings != null)
+                {
                     ScrollGuard.BlockOutsideGameWindow = settings.blockOutsideGameWindow;
+                    ScrollGuard.ErrorsOnlyLogging = settings.errorsOnlyLogging;
+                }
             }
             catch
             {

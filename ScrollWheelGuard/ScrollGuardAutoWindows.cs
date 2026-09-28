@@ -46,7 +46,7 @@ namespace ScrollWheelGuard
                     catch { hasBody = false; }
                     if (!hasBody)
                     {
-                        Debug.LogWarning("[ScrollWheelGuard] " + hosts[h].Name + "." + m.Name + " has no IL body; skipped.");
+                        ScrollGuardLog.Warning("[ScrollWheelGuard] " + hosts[h].Name + "." + m.Name + " has no IL body; skipped.");
                         continue;
                     }
 
@@ -57,12 +57,12 @@ namespace ScrollWheelGuard
                     }
                     catch (Exception e)
                     {
-                        Debug.LogWarning("[ScrollWheelGuard] could not postfix " + hosts[h].Name + "." + m.Name + ": " + e.Message);
+                        ScrollGuardLog.Warning("[ScrollWheelGuard] could not postfix " + hosts[h].Name + "." + m.Name + ": " + e.Message);
                     }
                 }
             }
 
-            Debug.Log("[ScrollWheelGuard] auto window detection: " + patched + " GUI.Window overload(s) hooked.");
+            ScrollGuardLog.Info("[ScrollWheelGuard] auto window detection: " + patched + " GUI.Window overload(s) hooked.");
             return patched;
         }
 

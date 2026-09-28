@@ -1,3 +1,7 @@
+Version 0.1.3
+- Added stock setting: Disable all logging except errors.
+- Centralized Scroll Wheel Guard logging so informational and warning messages can be suppressed while errors are always logged.
+
 0.1.2
 - Added a stock KSP settings page under Scroll Wheel Guard.
 - Added a persisted option: "Block scroll wheel when mouse is outside the KSP window".

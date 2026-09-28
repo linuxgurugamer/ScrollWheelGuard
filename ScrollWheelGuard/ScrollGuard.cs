@@ -54,6 +54,9 @@ namespace ScrollWheelGuard
         /// over a registered window, and the patches are not even being consulted.</summary>
         public static bool DebugLogging = true;
 
+        // When true, suppress all informational and warning messages; errors are always logged.
+        public static bool ErrorsOnlyLogging = false;
+
         /// <summary>
         /// Fallback: hold the camera's zoom distance while blocking, for scenes whose wheel read the
         /// IL scan cannot locate. Works regardless of the input path. See ScrollGuardZoomFreeze.
@@ -239,7 +242,7 @@ namespace ScrollWheelGuard
                 {
                     if (++e.Failures >= 5)
                     {
-                        Debug.LogError("[ScrollWheelGuard] Dropping registration " + e.Handle +
+                        ScrollGuardLog.Error("[ScrollWheelGuard] Dropping registration " + e.Handle +
                                        " after repeated provider errors: " + ex);
                         Entries.RemoveAt(i);
                     }
