@@ -1,0 +1,10 @@
+0.1.2
+- Added a stock KSP settings page under Scroll Wheel Guard.
+- Added a persisted option: "Block scroll wheel when mouse is outside the KSP window".
+- The stock setting is applied at runtime, so changes take effect without restarting KSP.
+
+0.1.1
+- Added BlockOutsideGameWindow (default true).
+- Wheel reads are now blocked when the cursor is outside the complete KSP window.
+- Windows detection uses the native KSP top-level window bounds, including title bar and borders, without relying on UNITY_STANDALONE_WIN compile symbols.
+
